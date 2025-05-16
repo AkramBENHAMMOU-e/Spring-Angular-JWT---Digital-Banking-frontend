@@ -7,8 +7,12 @@ import { Customer } from '../model/customer.model';
 })
 export class CustomerService {
 
+  backendhost : string = "http://localhost:8080";
   constructor(private http : HttpClient) { }
   public getCustomers(): Observable<Array<Customer>>{
-    return this.http.get<Array<Customer>>("http://localhost:8080/customers");
+    return this.http.get<Array<Customer>>(this.backendhost+"/customers");
   }
+  public searchCustomers(keyword: string): Observable<Array<Customer>>{
+    return this.http.get<Array<Customer>>(this.backendhost+"/customers/search?keyword="+keyword);
+  } 
 }

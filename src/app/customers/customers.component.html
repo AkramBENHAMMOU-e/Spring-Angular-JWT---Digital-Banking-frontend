@@ -5,6 +5,18 @@
         <h3>Customers</h3>
       </div>
       <div class="card-body">
+      <div *ngIf="searchFormGroup">
+  
+        <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
+          <div class="input-group">
+            <label class="input-group-text" for="keyword">Keyword</label>
+            <input type="text" class="form-control" formControlName="keyword">
+            <button class="btn btn-info" type="submit">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </form>
+      </div>
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
