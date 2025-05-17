@@ -14,4 +14,13 @@ export class AccountsService {
   public getAccount(accountId: string, page: number, size: number): Observable<AccountDetails>{
     return this.http.get<AccountDetails>(this.backendhost+"/accounts/"+accountId+"/pageOperations?page="+page+"&size="+size);
   }
+  public debit(accountId: string, amount: number, description: string): Observable<AccountDetails>{
+    return this.http.post<AccountDetails>(this.backendhost+"/accounts/debit", {accountId, amount, description});
+  }
+  public credit(accountId: string, amount: number, description: string): Observable<AccountDetails>{
+    return this.http.post<AccountDetails>(this.backendhost+"/accounts/credit", {accountId, amount, description});
+  } 
+  public transfert(accountSource: string, amount: number, description: string, accountDestination: string): Observable<AccountDetails>{
+    return this.http.post<AccountDetails>(this.backendhost+"/accounts/transfer", {accountSource, amount, description, accountDestination});
+  }
 }
