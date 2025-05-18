@@ -41,6 +41,9 @@ Cette page affiche les informations sur les comptes bancaires et permet d'effect
 
 ![Comptes Bancaires](screenshots/adminOp.png)
 
+### Ajout d'un nouveau client
+![Nouveau Client](screenshots/image.png)
+
 
 ### Comptes Bancaires User
 Cette page affiche les informations sur les comptes bancaires et cacher la partie operation sur un utilisateur normal.
@@ -83,15 +86,7 @@ digital-banking-web/
 3. Démarrez le serveur de développement avec `npm start` ou `ng serve`
 4. L'application sera accessible à l'adresse `http://localhost:4200`
 
-## Captures d'écran supplémentaires
 
-### Ajout d'un nouveau client
-![Nouveau Client](screenshots/new-customer.png)
-*Capture d'écran à ajouter*
-
-### Historique des opérations
-![Historique](screenshots/operations-history.png)
-*Capture d'écran à ajouter*
 
 ## Améliorations futures
 - Implémentation de la pagination pour les listes de clients et d'opérations
