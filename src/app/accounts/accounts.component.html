@@ -61,7 +61,7 @@
                 <div class="card-header">
                    Operations
                 </div>
-                <div class="card-body">
+                <div class="card-body" *ngIf="authService.roles.includes('ADMIN')">
                     <form [formGroup]="operationFormGroup" (ngSubmit)="handleAccountOperation()">
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">DEBIT : </label>

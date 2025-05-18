@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { AccountsService } from '../services/accounts.service';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AccountDetails } from '../model/account.model';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-accounts',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, NgIf],
   templateUrl: './accounts.component.html',
   styleUrl: './accounts.component.css'
 })
@@ -18,7 +19,7 @@ export class AccountsComponent implements OnInit{
   accountObservable! : Observable<AccountDetails>;
   operationFormGroup! : FormGroup;
   errorMessage! : string;
-  constructor(private fb : FormBuilder, private accountService : AccountsService){  }
+  constructor(private fb : FormBuilder, public authService : AuthService, private accountService : AccountsService){  }
   ngOnInit(): void {
     this.accountFormGroup = this.fb.group({
       accountId : this.fb.control(''),
