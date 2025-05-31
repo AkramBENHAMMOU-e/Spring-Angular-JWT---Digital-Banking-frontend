@@ -13,12 +13,13 @@ export const routes: Routes = [
     canActivate : [authentificationGuard],
     children : [
     {path : "accounts", component : AccountsComponent},
-    {path : "new-customer", component : NewCustomerComponent, canActivate : [authentificationGuard] , data : {roles : ["ADMIN"]}},  
+    {path : "accounts/:accountId", component : AccountsComponent},
+    {path : "new-customer", component : NewCustomerComponent, canActivate : [authentificationGuard] , data : {roles : ["ADMIN"]}},
     {path : "customer-accounts/:id", component : CustomerAccountsComponent},
     {path : "customers", component : CustomersComponent},
     {path:"notAuthorized", component : NotAuthorizedComponent}
   ]},
   {path : "login", component : LoginComponent},
   {path : "", redirectTo : "login", pathMatch : "full"}
-  
+
 ];

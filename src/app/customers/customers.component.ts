@@ -5,6 +5,7 @@ import { CustomerService } from '../services/customer.service';
 import { catchError, Observable, throwError, map } from 'rxjs';
 import { Customer } from '../model/customer.model';
 import { FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -17,7 +18,7 @@ export class CustomersComponent implements OnInit{
   customers! :   Observable<Array<Customer>>;
   errorMessage! : string;
   searchFormGroup! : FormGroup;
-  constructor(private customerService : CustomerService, private fb : FormBuilder) {
+  constructor(private customerService : CustomerService, private fb : FormBuilder, private router: Router) {
   }
   ngOnInit(): void {
     this.searchFormGroup = this.fb.group({
@@ -53,5 +54,16 @@ export class CustomersComponent implements OnInit{
         }
       });
     }
+  }
+
+  handleCustomerDetails(customer: Customer) {
+    this.router.navigateByUrl("/admin/customer-accounts/" + customer.id, { state: customer });
+  }
+
+  handleEditCustomer(customer: Customer) {
+    this.router.navigate(["/admin/customer-accounts/" + customer.id], {
+      state: customer,
+      queryParams: { edit: 'true' }
+    });
   }
 }

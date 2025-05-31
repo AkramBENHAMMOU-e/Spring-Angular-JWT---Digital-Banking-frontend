@@ -6,11 +6,11 @@
       </div>
       <div class="card-body">
       <div *ngIf="searchFormGroup">
-  
+
         <form [formGroup]="searchFormGroup" (ngSubmit)="handleSearchCustomers()">
           <div class="input-group">
             <label class="input-group-text" for="keyword">Keyword</label>
-            <input type="text" class="form-control" formControlName="keyword">
+            <input type="text" id="keyword" class="form-control" formControlName="keyword">
             <button class="btn btn-info" type="submit">
               <i class="bi bi-search"></i>
             </button>
@@ -25,7 +25,7 @@
               <th>Email</th>
               <th>Actions</th>
 
-  
+
             </tr>
           </thead>
           <tbody>
@@ -34,6 +34,12 @@
               <td>{{ customer.name }}</td>
               <td>{{ customer.email }}</td>
               <td>
+                <button (click)="handleCustomerDetails(customer)" class="btn btn-info me-2">
+                  <i class="bi bi-info-circle"></i> Details
+                </button>
+                <button (click)="handleEditCustomer(customer)" class="btn btn-warning me-2">
+                  <i class="bi bi-pencil"></i> Edit
+                </button>
                 <button (click)="handleDeleteCustomer(customer)" class="btn btn-danger">
                   <i class="bi bi-trash"></i>
                 </button>
@@ -53,8 +59,8 @@
     <ng-template #loading>
       Loading...
     </ng-template>
-   
+
   </ng-template>
-  
+
 
 </div>

@@ -19,8 +19,12 @@ export class AccountsService {
   }
   public credit(accountId: string, amount: number, description: string): Observable<AccountDetails>{
     return this.http.post<AccountDetails>(this.backendhost+"/accounts/credit", {accountId, amount, description});
-  } 
+  }
   public transfert(accountSource: string, amount: number, description: string, accountDestination: string): Observable<AccountDetails>{
     return this.http.post<AccountDetails>(this.backendhost+"/accounts/transfer", {accountSource, amount, description, accountDestination});
+  }
+
+  public getAccountsByCustomerId(customerId: number): Observable<Array<any>>{
+    return this.http.get<Array<any>>(this.backendhost+"/customers/"+customerId+"/accounts");
   }
 }

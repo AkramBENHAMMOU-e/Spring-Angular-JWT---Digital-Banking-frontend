@@ -1,12 +1,167 @@
-<div class="container">
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="mb-0"><i class="bi bi-person-badge me-2"></i>Customer Profile</h1>
+                <button class="btn btn-outline-secondary" onclick="history.back()">
+                    <i class="bi bi-arrow-left me-1"></i> Back
+                </button>
+            </div>
+            <hr class="my-3">
+        </div>
+    </div>
+
     <div class="row">
-        <div class="col-md-6">
-            <h1>Customer Accounts</h1>
-            <div class="card">
-                <div class="card-header">
-                    <h4>{{customer.name}}</h4>
-                    <h4>{{customer.email}}</h4>
-                    <h4>{{customer.id}}</h4>
+        <!-- Customer Information Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0"><i class="bi bi-person-circle me-2"></i>Customer Details</h4>
+                    <button class="btn btn-sm btn-light" (click)="editCustomer()">
+                        <i class="bi bi-pencil-square me-1"></i> Edit
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Success message -->
+                    <div *ngIf="updateSuccess" class="alert alert-success mb-3">
+                        <i class="bi bi-check-circle-fill me-2"></i> Customer information updated successfully!
+                    </div>
+
+                    <!-- Edit Form -->
+                    <div *ngIf="editMode">
+                        <form [formGroup]="customerForm" (ngSubmit)="saveCustomer()">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">
+                                    <i class="bi bi-person-fill text-primary me-2"></i>Full Name
+                                </label>
+                                <input type="text" class="form-control" id="name" formControlName="name">
+                                <div *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched" class="text-danger small">
+                                    <div *ngIf="customerForm.get('name')?.errors?.['required']">Name is required</div>
+                                    <div *ngIf="customerForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters</div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">
+                                    <i class="bi bi-envelope-fill text-primary me-2"></i>Email Address
+                                </label>
+                                <input type="email" class="form-control" id="email" formControlName="email">
+                                <div *ngIf="customerForm.get('email')?.invalid && customerForm.get('email')?.touched" class="text-danger small">
+                                    <div *ngIf="customerForm.get('email')?.errors?.['required']">Email is required</div>
+                                    <div *ngIf="customerForm.get('email')?.errors?.['email']">Please enter a valid email</div>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end gap-2">
+                                <button type="button" class="btn btn-outline-secondary" (click)="cancelEdit()">
+                                    <i class="bi bi-x-circle me-1"></i> Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary" [disabled]="customerForm.invalid">
+                                    <i class="bi bi-save me-1"></i> Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Customer Details View -->
+                    <div *ngIf="!editMode" class="d-flex flex-column">
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-person-fill text-primary me-2 fs-5"></i>
+                                <span class="text-muted">Full Name</span>
+                            </div>
+                            <h5>{{customer.name}}</h5>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-envelope-fill text-primary me-2 fs-5"></i>
+                                <span class="text-muted">Email Address</span>
+                            </div>
+                            <h5>{{customer.email}}</h5>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-credit-card-fill text-primary me-2 fs-5"></i>
+                                <span class="text-muted">Customer ID</span>
+                            </div>
+                            <h5>{{customer.id}}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bank Accounts Card -->
+        <div class="col-md-8 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-bank me-2"></i>Bank Accounts</h4>
+                </div>
+                <div class="card-body">
+                    <ng-container *ngIf="accounts$ | async as accountsList; else failureOrLoading">
+                        <div *ngIf="accountsList.length > 0; else noAccounts">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped border">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col">Account ID</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Balance</th>
+                                            <th scope="col" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let account of accountsList">
+                                            <td>
+                                                <span class="text-truncate d-inline-block" style="max-width: 150px;" title="{{account.id}}">
+                                                    {{account.id}}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge rounded-pill"
+                                                      [ngClass]="{'bg-success': account.type === 'SavingAccount', 'bg-info': account.type === 'CurrentAccount'}">
+                                                    {{account.type}}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span [ngClass]="{'text-success': account.balance > 0, 'text-danger': account.balance < 0}">
+                                                    <strong>{{account.balance | number:'1.2-2'}} €</strong>
+                                                </span>
+                                            </td>
+                                            <td class="text-center">
+                                                <button (click)="goToAccountOperations(account.id)" class="btn btn-sm btn-primary">
+                                                    <i class="bi bi-eye me-1"></i> View Operations
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <ng-template #noAccounts>
+                            <div class="alert alert-info d-flex align-items-center">
+                                <i class="bi bi-info-circle-fill me-2 fs-4"></i>
+                                <div>
+                                    This customer has no bank accounts.
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-container>
+                    <ng-template #failureOrLoading>
+                        <ng-container *ngIf="errorMessage; else loading">
+                            <div class="alert alert-danger d-flex align-items-center">
+                                <i class="bi bi-exclamation-triangle-fill me-2 fs-4"></i>
+                                <div>
+                                    {{errorMessage}}
+                                </div>
+                            </div>
+                        </ng-container>
+                        <ng-template #loading>
+                            <div class="d-flex justify-content-center p-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ng-template>
                 </div>
             </div>
         </div>

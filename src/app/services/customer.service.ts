@@ -14,7 +14,7 @@ export class CustomerService {
   }
   public searchCustomers(keyword: string): Observable<Array<Customer>>{
     return this.http.get<Array<Customer>>(this.backendhost+"/customers/search?keyword="+keyword);
-  } 
+  }
 
   public saveCustomer(customer: Customer): Observable<Customer>{
     return this.http.post<Customer>(this.backendhost+"/customers", customer);
@@ -22,5 +22,9 @@ export class CustomerService {
 
   public deleteCustomer(id: number): Observable<void>{
     return this.http.delete<void>(this.backendhost+"/customers/"+id);
+  }
+
+  public updateCustomer(customer: Customer): Observable<Customer>{
+    return this.http.put<Customer>(this.backendhost+"/customers/"+customer.id, customer);
   }
 }

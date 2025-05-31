@@ -5,6 +5,7 @@ import { AccountsService } from '../services/accounts.service';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AccountDetails } from '../model/account.model';
 import { AuthService } from '../services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-accounts',
   standalone: true,
@@ -19,7 +20,12 @@ export class AccountsComponent implements OnInit{
   accountObservable! : Observable<AccountDetails>;
   operationFormGroup! : FormGroup;
   errorMessage! : string;
-  constructor(private fb : FormBuilder, public authService : AuthService, private accountService : AccountsService){  }
+  constructor(
+    private fb : FormBuilder,
+    public authService : AuthService,
+    private accountService : AccountsService,
+    private route: ActivatedRoute
+  ){  }
   ngOnInit(): void {
     this.accountFormGroup = this.fb.group({
       accountId : this.fb.control(''),
@@ -32,6 +38,13 @@ export class AccountsComponent implements OnInit{
       description : this.fb.control(null),
       accountDestination : this.fb.control(null),
     });
+
+    // Check if accountId is provided in the route
+    const accountId = this.route.snapshot.params['accountId'];
+    if (accountId) {
+      this.accountFormGroup.patchValue({ accountId: accountId });
+      this.handleSearchAccount();
+    }
   }
 
   handleSearchAccount(){
@@ -69,7 +82,7 @@ export class AccountsComponent implements OnInit{
           alert("Success Credit");
           this.operationFormGroup.reset();
           this.handleSearchAccount();
-        },  
+        },
         error : (err) => {
           console.log(err);
         }
@@ -86,6 +99,6 @@ export class AccountsComponent implements OnInit{
           console.log(err);
         }
       });
-    } 
+    }
   }
 }
