@@ -6,6 +6,7 @@ import { AccountsService } from '../services/accounts.service';
 import { CustomerService } from '../services/customer.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-customer-accounts',
@@ -27,7 +28,8 @@ export class CustomerAccountsComponent implements OnInit{
     private router : Router,
     private accountsService : AccountsService,
     private customerService: CustomerService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public authService: AuthService
   ){
     this.customer = this.router.getCurrentNavigation()?.extras.state as Customer;
   }

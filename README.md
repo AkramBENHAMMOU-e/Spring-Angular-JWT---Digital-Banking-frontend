@@ -30,6 +30,11 @@ Cette page affiche la liste de tous les clients avec des options pour gérer cha
 
 ![Liste des Clients](screenshots/customers.png)
 
+### Modifier un Client && afficher les comptes d'un client
+Cette page permet de modifier les informations d'un client et d'afficher ses comptes bancaires associés.
+![Modifier un Client](screenshots/details.png)
+
+
 
 ### Home
 Cette page montre la premiere page apres avoir authentifié
